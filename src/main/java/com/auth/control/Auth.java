@@ -30,6 +30,7 @@ public class Auth {
      */
     @RequestMapping(value = "login")
     public Map<String, String> signIn(@RequestBody Map<String, String> user) {
+        //注释
         return tokenService.getToken(user.get("userName"));
     }
 
