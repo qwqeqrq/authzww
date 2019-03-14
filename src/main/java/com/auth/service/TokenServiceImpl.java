@@ -1,19 +1,26 @@
 package com.auth.service;
 
 import com.auth.util.RsaUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zww on 2019-03-11.
  */
 @Service
 public class TokenServiceImpl implements TokenService {
+
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Value("${privateKey}")
     private String privateKey;//私钥
@@ -37,6 +44,7 @@ public class TokenServiceImpl implements TokenService {
             System.out.println("私钥："+privateKey);
             String token = RsaUtil.autograph(userStr, privateKey, cipher);//进行签名认证拿到token
             Map<String, String> tokenMap = new HashMap<>();
+            redisTemplate.opsForValue().set(userInfo,token,60*2, TimeUnit.SECONDS);
             tokenMap.put("token", token);
             return tokenMap;
         } catch (NoSuchAlgorithmException e) {
