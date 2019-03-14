@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: authzww
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      config:
+        maxTotal: 100
+        maxIdle: 10
+        maxWaitMillis: 100000
 eureka:
   client:
     register-with-eureka: true
