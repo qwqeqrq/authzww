@@ -117,7 +117,7 @@ public class RsaUtil {
         byte[] bytes = Base64.getDecoder().decode(str.getBytes("UTF-8"));
        /* //RSA解密
         Cipher cipher = Cipher.getInstance("RSA");*/
-        cipher.init(Cipher.UNWRAP_MODE, publicKey1);//解密模式
+        cipher.init(Cipher.DECRYPT_MODE, publicKey1);//解密模式
         byte[] b = cipher.doFinal(bytes);
         String plaintext = new String(b);
         System.out.println("RAS解密后密文：" + plaintext);
