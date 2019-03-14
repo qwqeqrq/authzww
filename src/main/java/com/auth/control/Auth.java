@@ -1,6 +1,8 @@
 package com.auth.control;
 
-import com.auth.util.AreaCalculation;
+
+import com.auth.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +15,12 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "Auth")
 public class Auth {
+
+    @Autowired
+    TokenService tokenService;
+
     /**
-     * @描述： 用户登录
+     * @描述： 用户登录 返回token
      * @参数： []
      * @返回值： java.lang.String
      * @创建人： zhangww
@@ -22,9 +28,8 @@ public class Auth {
      * @修改人和其它信息：
      */
     @RequestMapping(value = "login")
-    public Map<String, String> signIn() {
-
-        return null;
+    public Map<String, String> signIn(@RequestBody Map<String, String> user) {
+        return tokenService.getToken(user.get("userName"));
     }
 
     /**
@@ -41,11 +46,4 @@ public class Auth {
         return null;
     }
 
-
-    @RequestMapping(value = "jisuanmianji")
-    public static  Double jisuan(@RequestBody double[][] side3) {
-        side3 = AreaCalculation.antiClockWiseSort(side3);
-        //计算下这四个点围成的正方形的面积
-       return AreaCalculation.getmianji(side3);
-    }
 }

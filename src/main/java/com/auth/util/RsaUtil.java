@@ -17,7 +17,7 @@ public class RsaUtil {
     /**
      * @描述： 用jdk自带Base64，Cipher进行公钥，私钥的生成 实现RSA 加密解密算法
      * @参数： []
-     * @返回值： java.util.Map<java.lang.String               ,               java.lang.String>
+     * @返回值： java.util.Map<java.lang.String                                                               ,                                                               java.lang.String>
      * @创建人： zhangww
      * @创建时间： 2019-03-05
      * @修改人和其它信息：
@@ -35,6 +35,7 @@ public class RsaUtil {
         rasMap.put("privateKey", privateKey);
         return rasMap;
     }
+
     /**
      * @描述： 通过RSA私钥进行解密，返回解密后的串
      * @参数： [miwen 密文, privateKey RSA私钥, cipher 密码类]
@@ -44,7 +45,7 @@ public class RsaUtil {
      * @修改人和其它信息：
      */
     //通过私钥解密
-    public String decrypt(String miwen, String privateKey, Cipher cipher) throws Exception {
+    public static String decrypt(String miwen, String privateKey, Cipher cipher) throws Exception {
         //通过base64 解码私钥
         byte[] privateKeyByte = Base64.getDecoder().decode(privateKey);
         RSAPrivateKey privateKey1 = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(privateKeyByte));
@@ -68,7 +69,7 @@ public class RsaUtil {
      * @修改人和其它信息：
      */
     //通过公钥加密
-    public String encryption(String str, String publicKey, Cipher cipher) throws Exception {
+    public static String encryption(String str, String publicKey, Cipher cipher) throws Exception {
         //通过base64 解码公钥
         byte[] publicKeyByte = Base64.getDecoder().decode(publicKey);
         RSAPublicKey publicKey1 = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyByte));
@@ -78,5 +79,48 @@ public class RsaUtil {
         String ciphertext = Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes("UTF-8")));
         System.out.println("RAS加加密后：" + ciphertext);
         return ciphertext;
+    }
+
+    /**
+     * @描述： 通过私钥进行签名
+     * @参数： [str 待签名字符串, privateKey 私钥, cipher 加密对象]
+     * @返回值： java.lang.String
+     * @创建人： zhangww
+     * @创建时间： 2019-03-14
+     * @修改人和其它信息：
+     */
+    public static String autograph(String str, String privateKey, Cipher cipher) throws Exception {
+        //通过base64 解码私钥
+        byte[] privateKeyByte = Base64.getDecoder().decode(privateKey);
+        RSAPrivateKey privateKey1 = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(privateKeyByte));
+        /*//RSA加密
+        Cipher cipher = Cipher.getInstance("RSA");*/
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey1);//加密模式
+        String ciphertext = Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes("UTF-8")));
+        System.out.println("RAS加加密后：" + ciphertext);
+        return ciphertext;
+    }
+
+    /**
+     * @描述： 通过公钥进行签名认证
+     * @参数： [str 待验证签名字符串, publicKey 公钥, cipher 加密对象]
+     * @返回值： java.lang.String
+     * @创建人： zhangww
+     * @创建时间： 2019-03-14
+     * @修改人和其它信息：
+     */
+    public static String signature(String str, String publicKey, Cipher cipher) throws Exception {
+        //通过base64 解码公钥
+        byte[] publicKeyByte = Base64.getDecoder().decode(publicKey);
+        RSAPublicKey publicKey1 = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyByte));
+        //先解密密文
+        byte[] bytes = Base64.getDecoder().decode(str.getBytes("UTF-8"));
+       /* //RSA解密
+        Cipher cipher = Cipher.getInstance("RSA");*/
+        cipher.init(Cipher.UNWRAP_MODE, publicKey1);//解密模式
+        byte[] b = cipher.doFinal(bytes);
+        String plaintext = new String(b);
+        System.out.println("RAS解密后密文：" + plaintext);
+        return plaintext;
     }
 }

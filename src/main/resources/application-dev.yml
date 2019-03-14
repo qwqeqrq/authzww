@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: authzww
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #Servse 地址
+  instance:
+    hostname: 127.0.0.1
+    instance-id: ${hostname}:${server.port}  #向注册中心暴露服务提供者的IP和端口
+    prefer-ip-address: true
+    #公钥私钥 暂时放在配置文件中，后期放redis中
+privateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAJNcFy9yjoLrNSw+s91CbdgaRvW42ZXUWg8acm0mht/gnwVUQ2nzgbCvrwvgkOl7d69tQlM0gY55WwpKuYmze025fmzfkQGNHBAT9D+8/BMh+hE03Gx9zfLae3b5ggl/ihNGfJhXS7ShqVmsB2Zr2koOoO8s9avND2069dYmHs4fAgMBAAECgYBfV888iM9CT7K4rN0tRITTtLTC2dYWRi365a6xhqLviWL6TLnNfJsl2ZXVhnfcSWF35KZsNWW57DUGZLDFMpaNCShOxuV8jyBZUdY1t9x9OoOqFSn7u2Gdl7h1M/lSEESVgbg779bvD9mIkUrTKlCLEDCklrx7JsMR7cDvKl+sGQJBAMJtopz35DTqJt5A2Txy8tFqO5idICpl5L0V0kO6wYXLyAwSI1TFq/xny2mG+PgdNZ6qwHDaAoRcylqrPfX0LnMCQQDCBpftBhEzJQGtiDlotIQNDzGhzRpjlyPoURSucixI79TSmY/uBYrV2lI85xhitYfqINyTqegvaxJkb9O56iqlAkEAl8gy/EthMhXhhfwmGtS5ztYZ9EglhjPJX/ubDBjNXv/5CcNXJaSzYPY+jAE8d6WF6HnwhakL8fzmU+X/FvUrFQJBAKjOycG7pJ1F1jbfrWsOm1EtZfYrF4mMRv5qBL9dsG/o0dZFKrdg9RDoeOJqAYpn/A9UdfS3P755vq/Jp4E6Xc0CQQC66DfTteP99Pwy/b3zYmMjVLBWcbsJpNaZ4yMlZ2t2peOl+muP1jOaHXjYZUpdrr9bAgIMZwWOy24+M7PngKdS
+publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTXBcvco6C6zUsPrPdQm3YGkb1uNmV1FoPGnJtJobf4J8FVENp84Gwr68L4JDpe3evbUJTNIGOeVsKSrmJs3tNuX5s35EBjRwQE/Q/vPwTIfoRNNxsfc3y2nt2+YIJf4oTRnyYV0u0oalZrAdma9pKDqDvLPWrzQ9tOvXWJh7OHwIDAQAB

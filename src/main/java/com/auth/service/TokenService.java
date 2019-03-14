@@ -7,6 +7,6 @@ import java.util.Map;
  */
 public interface TokenService {
 
-    //生成TOKEN
-    Map<String, String> getToken();
+    //生成TOKEN，根据用户信息生成token
+    Map<String, String> getToken(String userInfo);
 }
